@@ -1,0 +1,83 @@
+---
+title: Node.js
+description: A guide in my new Starlight docs site.
+---
+
+Node.js can be installed in many different ways for linux. The prefered method is to use your Linux Distributions default package manager to install Nodejs and NPM. If this fails it is possible to install using 2 other methods.
+
+## 1. Installation Via Your Distributions Default Package Manager 
+#### Debian, Ubuntu and Raspbian
+```shell
+sudo apt update
+# Only one or both of these packages may be required
+sudo apt install npm
+sudo apt install nodejs
+```
+Afterwards run these commands to ensure that both npm and nodejs are installed
+
+```shell
+npm -v
+# 10.8.2
+node -v
+# v22.6.0
+```
+
+#### Arch Linux
+```shell
+sudo pacman -Syu
+sudo pacman -S --needed \
+  npm \
+  nodejs
+```
+
+#### Fedora And Red Hat Enterprise Linux
+```shell
+sudo dnf check-update
+sudo dnf install \
+  nodejs \ 
+  npm
+```
+
+## Installation Via A Node Package Manager
+While not as simple Nodejs has package managers meant for managing installations and updates for nodejs
+
+#### FNM (Fast Node Manager)
+Running this script will install FNM as well. If for some reason you do not want to install FNM, please try using another method.
+```shell
+# installs fnm (Fast Node Manager)
+curl -fsSL https://fnm.vercel.app/install | bash
+
+# activate fnm
+source ~/.bashrc
+
+# download and install Node.js
+fnm use --install-if-missing 20
+
+# verifies the right Node.js version is in the environment
+node -v # should print `v20.17.0`
+
+# verifies the right npm version is in the environment
+npm -v # should print `10.8.2`
+```
+#### Installation with NVM (Node Version Manager)
+Running this script will install NVM as well. If for some reason you do not wish to install NVM, please try using another method.
+```shell
+# installs nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
+
+# download and install Node.js (you may need to restart the terminal)
+nvm install 20
+
+# verifies the right Node.js version is in the environment
+node -v # should output something similar to `v20.17.0`
+
+# verifies the right npm version is in the environment
+npm -v # should output something similar to `10.8.2`
+```
+
+## Installing with Snap (Requires installation of Snap)
+Installation using Snap is simple, however it is imperative that you have completed the prerequisites for installing Snapcraft prior to running these commands as it will fail otherwise.
+```shell
+sudo snap install node --channel=22/stable --classic
+```
+This snap also provides `nodejs`, `npm`, `npx`, and `yarn`.

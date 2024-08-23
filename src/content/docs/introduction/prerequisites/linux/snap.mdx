@@ -1,0 +1,58 @@
+---
+title: Snapcraft
+description: A guide in my new Starlight docs site.
+---
+# Overview
+Snap is a non distro specific package format that bundles all dependencies required into a snap. Snap is quite popular on linux due to the Ubuntu shipping with snap preinstalled. Due to this, it may be worth it to distribute your app as a snap.
+Installation of Snap can range from being difficult to being more challenging depending on what distribution you are using.
+
+### Debian, Ubuntu and RaspberryPiOS
+##### Step 1. Install snapd
+```shell
+sudo apt update
+sudo apt install snapd
+```
+##### Step 2. Update to the latest version of snapd
+```shell
+sudo snap install snapd
+```
+
+### Fedora
+##### Step 1. Install Snapd
+```shell
+sudo dnf install snapd
+```
+##### Step 2. Enable Classic Snap Support
+```shell
+sudo ln -s /var/lib/snapd/snap /snap
+```
+
+### Arch Linux
+##### Step 1. Compile it from the Arch User Repository.
+```shell
+git clone https://aur.archlinux.org/snapd.git
+cd snapd
+makepkg -si
+```
+
+##### Step 2. Enable the Snap Communication Socket
+```shell
+sudo systemctl enable --now snapd.socket
+```
+
+##### Step 3. Enable The AppArmor service For Snap
+This step is only required if AppArmor is enabled for your system.
+```shell
+sudo systemctl enable --now snapd.apparmor.service
+```
+
+##### Step 4. Enable Classic Snap Support
+```shell
+sudo ln -s /var/lib/snapd/snap /snap
+```
+## Installing Snapcraft Your Base Snap
+In order to bundle a snap you must install your choice of base snap such as `core22` and `core24`. Afterwards you must install snapcraft with classic snap support.
+```shell
+sudo snap install core22 # Change this to your desired base snap
+sudo snap install snapcraft --classic
+```

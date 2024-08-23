@@ -1,0 +1,45 @@
+---
+title: Tauri Configuration
+description: A guide in my new Starlight docs site.
+---
+As previously mentioned, the `tauri.conf.json` is the tauri configuration file. It controls things such as the windows title, the default window size, and what bundles are produced when the app is built.
+### ``tauri.conf.json``
+```
+{
+  "productName": "example",
+  "version": "0.1.0",
+  "identifier": "com.example.app",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "example",
+        "label": "main",
+        "maximized": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["deb", "rpm", "nsis", "msi"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
+```
+- The product name and version variables are used to name the bundles and installers `ex: example_0.1.0_arm64.deb`
+- The "windows" variable contains a list of windows that can be displayed.
+- Each window has a `title` variable that controls the title of the window that is displayed to the user.
+- The `targets` variable contains a list of bundles and installers that will be produced when your run `npm run tauri build`
+- The `icon` variable contains a list of images that will be used as your apps icon.

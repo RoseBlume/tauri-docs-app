@@ -1,0 +1,72 @@
+---
+title: Overview
+description: A guide in my new Starlight docs site.
+---
+
+Before you begin developing your app it is imperative that you first install the proper dependencies for your chosen distro.
+
+### Debian/Ubuntu
+```shell
+sudo apt update
+sudo apt install libwebkit2gtk-4.1-dev \
+  build-essential \
+  curl \
+  wget \
+  file \
+  libxdo-dev \
+  libssl-dev \
+  libayatana-appindicator3-dev \
+  librsvg2-dev
+```
+As Debian distros use a point release system it is only possible to install these packages using Debian Bookworm and onwards. It is a similar situation with Ubuntu where you must be using the Noble suite and onwards.
+
+### Arch Linux
+```shell
+sudo pacman -Syu
+sudo pacman -S --needed \
+  webkit2gtk-4.1 \
+  base-devel \
+  curl \
+  wget \
+  file \
+  openssl \
+  appmenu-gtk-module \
+  libappindicator-gtk3 \
+  librsvg
+```
+
+### Fedora/RHEL
+```shell
+sudo dnf check-update
+sudo dnf install webkit2gtk4.1-devel \
+  openssl-devel \
+  curl \
+  wget \
+  file \
+  libappindicator-gtk3-devel \
+  librsvg2-devel
+sudo dnf group install "C Development Tools and Libraries"
+```
+
+### Gentoo
+```shell
+sudo emerge --ask \
+  net-libs/webkit-gtk:4.1 \
+  dev-libs/libappindicator \
+  net-misc/curl \
+  net-misc/wget \
+  sys-apps/file
+```
+
+### openSUSE
+```shell
+sudo zypper up
+sudo zypper in webkit2gtk3-devel \
+  libopenssl-devel \
+  curl \
+  wget \
+  file \
+  libappindicator3-1 \
+  librsvg-devel
+sudo zypper in -t pattern devel_basis
+```

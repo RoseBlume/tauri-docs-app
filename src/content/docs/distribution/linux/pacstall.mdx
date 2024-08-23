@@ -1,0 +1,53 @@
+---
+title: Pacstall
+description: A guide in my new Starlight docs site.
+---
+Pacstall is similar to the Arch User Repository, however it is meant for debian based distros. It is rapidly gaining popularity.
+
+Step 1. Create a fork of pacstall-programs at https://github.com/pacstall/pacstall-programs
+Step 2. Create a folder within the packages directory with your apps name.
+Step 3. Create your pacscript.
+It is simplest to use the debian package that would be automatically released on github. All pacscripts that use a debian package source are required to be suffixed `-deb`. Using a debian source makes it much faster to install your application.
+```ini
+pkgname="appname-deb"
+gives="${pkgname/-deb/}"
+pkgver="2.0.3"
+pkgdesc="A Bible App developed with tauri"
+arch=('amd64' 'arm64' 'armhf')
+url="https://github.com/Username/Your_Repository"
+maintainer=("Firstname Lastname <email>")
+depends=('libwebkit2gtk-4.1-dev' 'build-essential' 'curl' 'wget' 'file' 'libxdo-dev' 'libssl-dev' 'libayatana-appindicator3-dev' 'librsvg2-dev')
+source=("https://github.com/your_username/your_repository/releases/download/v${pkgver}/app_${pkgver}_${CARCH}.deb")
+sha256sums_amd64=('81c917fdce366aa6d417fdae65306c5f4860fb9dc26c8ffa9a9b62c0d206c54a')
+sha256sums_arm64=('bad20bfad1c337db35ee3f95d59ad5e70c4947b64aa6118de0953ddfec4c1538')
+sha256sums_armhf=('8a8140bf7dcea4852a265b55bca332bb904d249627521b1bd1a985b383fd8307')
+```
+- The `pkgname` variable is given your apps name with the suffix of `-deb`
+- The `gives` variable defines your executables name
+- The `pkgver` variable is the version of your app and can be used when defining your source to improve maintainability.
+- The `pkgdesc` is a required variable that contains a short description of your app.
+- The `arch` variable contains information on which architectures your app supports.
+- The  `url` variable links to your apps homepage.
+- The `maintainer` variable defines who is currently maintaining the pacscript
+- The `depends` variable contains a list of packages in which your app is dependent on.
+- The `source` variable uses previously defined variable to improve maintainability and links to your apps deb files.
+
+Step 4. Clone The `pacstall-programs` Repository
+```shell
+git clone https://github.com/pacstall/pacstall-programs
+```
+
+Step 5. Enter the repositorys main directory
+```shell
+cd pacstall-programs
+```
+
+Step 6. Generate the **SRCINFO** for your package
+```shell
+./scripts/srcinfo.sh add ${pkgname}
+```
+Step 7. Upload your changes to github
+Step 8. Open a Pull request with following title format
+```
+add: `pkgname`
+```

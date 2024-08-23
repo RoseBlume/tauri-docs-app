@@ -1,0 +1,201 @@
+---
+title: Creating a new project
+description: A guide in my new Starlight docs site.
+---
+```
+C:.
+│   package.json
+│
+├───src
+│       index.html
+│       main.js
+│       styles.css
+│
+└───src-tauri
+    │   build.rs
+    │   Cargo.toml
+    │   tauri.conf.json
+    │
+    └───src
+            lib.rs
+            main.rs
+```
+### ``package.json``
+The `package.json` file in your projects root contains information such as your apps name, version and dependencies. It also holds scripts which can be run using npm.
+```json
+{
+  "name": "example",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": ">=2.0.0-rc.0"
+  }
+}
+```
+## The `src` Directory
+This directory contains your frontend code. This is information that is displayed to the user. It contains 3 files, `index.html`, `styles.css`, and `main.js` respectively.
+### ``src/index.html``
+Within the `src` directory, the `index.html` file contains all of the images, and text that will be displayed. For now, it should look like this.
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri App</title>
+    <script type="module" src="/main.js" defer></script>
+  </head>
+
+  <body>
+      <h1>Welcome to Tauri!</h1>
+  </body>
+</html>
+```
+
+### ``src/styles.css``
+In the src directory the styles.css contains all of the info regarding text alignment, image sizes, colors, and backgrounds that will be displayed on the page.
+```css
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+
+  color: #0f0f0f;
+  background-color: #f6f6f6;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1 {
+  text-align: center;
+}
+```
+
+### ``src/main.js``
+The `main.js` file adds interactivity to the app. For example, if a button is clicked, the background will change color. For now all that is required is this.
+```js
+const { invoke } = window.__TAURI__.core;
+```
+## The ``src-tauri`` Directory
+This directory contains all of the backend code along with some app configuration files. Within it are the `build.rs`, `tauri.conf.json`, and `Cargo.toml` files.
+
+### ``src-tauri/build.rs``
+This is the code that is used to build the app. Most projects will use files that look like this.
+```rs
+fn main() {
+    tauri_build::build()
+}
+
+```
+
+### ``src-tauri/Cargo.toml``
+This file contains information that controls how the code is compiled and what optimizations are used.
+```toml
+[package]
+name = "example"
+version = "0.1.0"
+description = "A Tauri App"
+authors = ["you"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "example_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[profile.release]
+panic = "abort" # Strip expensive panic clean-up logic
+codegen-units = 1 # Compile crates one after another so the compiler can optimize better
+lto = true # Enables link to optimizations
+opt-level = "s" # Optimize for binary size
+
+[build-dependencies]
+tauri-build = { version = "2.0.0-rc", features = [] }
+
+[dependencies]
+tauri = { version = "2.0.0-rc", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+```
+
+### ``src-tauri/tauri.conf.json``
+This file controls information such as your apps title, and what installers/bundles will be produced with the build command. For now the file should look like this.
+```json
+{
+  "productName": "example",
+  "version": "0.1.0",
+  "identifier": "com.example.app",
+  "build": {
+    "frontendDist": "../src"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "example",
+        "label": "main",
+        "maximized": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["deb", "rpm", "nsis", "msi"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ]
+  }
+}
+```
+
+## The ``src-tauri/src`` Directory
+Within the src-tauri directory there is a `src` subdirectory. Within this subdirectory are two files, `lib.rs`, and `main.rs` respectively.
+
+### ``src-tauri/src/lib.rs``
+This file is the mobile entry point that is used on Android and IOS devices. This file should look like this.
+```rs
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    tauri::Builder::default()
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+```
+
+### ``src-tauri/src/main.rs``
+This file is the entrypoint for non mobile users. It should look like this.
+```rs
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+fn main() {
+    example_lib::run()
+}
+```
+
+Once all of your files open the projects main directory in the terminal and run the following.
+```shell
+npm install # This installs the frontend dependencies
+
+npm run tauri dev # This opens the developer window which reloads everytime one of the projects files are modified and saved
+```
+Once these commands are run, the dev window should appear on your screenshot
+## Example
+![Example 1 Screenshot](/getting-started/project.png)
